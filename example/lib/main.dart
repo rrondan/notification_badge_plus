@@ -60,10 +60,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _initializePlugin() async {
     try {
-      final isSupported = await NotificationBadge.isSupported();
-      final manufacturer = await NotificationBadge.getDeviceManufacturer();
-      final currentCount = await NotificationBadge.getBadgeCount();
-      
+      final isSupported = await NotificationBadgePlus.isSupported();
+      final manufacturer = await NotificationBadgePlus.getDeviceManufacturer();
+      final currentCount = await NotificationBadgePlus.getBadgeCount();
+
       setState(() {
         _isSupported = isSupported;
         _manufacturer = manufacturer;
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _refreshBadgeCount() async {
     try {
-      final currentCount = await NotificationBadge.getBadgeCount();
+      final currentCount = await NotificationBadgePlus.getBadgeCount();
       setState(() {
         _badgeCount = currentCount;
       });
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _setBadgeCount(int count) async {
     try {
-      final success = await NotificationBadge.setBadgeCount(count);
+      final success = await NotificationBadgePlus.setBadgeCount(count);
       setState(() {
         if (success) {
           _badgeCount = count;
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _incrementBadge() async {
     try {
-      final newCount = await NotificationBadge.incrementBadge();
+      final newCount = await NotificationBadgePlus.incrementBadge();
       setState(() {
         _badgeCount = newCount;
         _status = 'Badge incremented to $newCount';
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _decrementBadge() async {
     try {
-      final newCount = await NotificationBadge.decrementBadge();
+      final newCount = await NotificationBadgePlus.decrementBadge();
       setState(() {
         _badgeCount = newCount;
         _status = 'Badge decremented to $newCount';
@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   Future<void> _clearBadge() async {
     try {
-      final success = await NotificationBadge.clearBadge();
+      final success = await NotificationBadgePlus.clearBadge();
       setState(() {
         if (success) {
           _badgeCount = 0;
