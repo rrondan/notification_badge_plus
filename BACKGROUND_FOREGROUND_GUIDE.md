@@ -99,9 +99,9 @@ await NotificationBadgePlus.setBadgeCount(5);
 
 ### Android Badge Complexity
 
-Android badge handling is more complex due to OEM variations:
+Android badge handling is more complex due to manufacturer variations:
 
-#### OEM-Specific Behavior:
+#### Manufacturer-Specific Behavior:
 
 **Samsung Devices:**
 ```kotlin
@@ -123,7 +123,7 @@ val notification = NotificationCompat.Builder(context, CHANNEL_ID)
 notificationManager.notify(NOTIFICATION_ID, notification)
 ```
 
-**Other OEMs:**
+**Other Manufacturers:**
 ```kotlin
 // Broadcast-based approaches
 val intent = Intent("com.manufacturer.launcher.action.UPDATE_BADGE")
@@ -577,7 +577,7 @@ Future<void> _requestNotificationPermissions() async {
 }
 ```
 
-#### 4. Android Badge Not Working on Specific OEMs
+#### 4. Android Badge Not Working on Specific Manufacturers
 
 **Problem**: Badge doesn't show on certain Android manufacturers.
 
@@ -631,7 +631,7 @@ The notification_badge_plus plugin provides robust background and foreground bad
 
 Key takeaways:
 - iOS provides native badge persistence and background updates
-- Android requires OEM-specific approaches and careful state management
+- Android requires manufacturer-specific approaches and careful state management
 - Always implement proper app lifecycle handling
 - Provide fallbacks for unsupported devices
 - Test thoroughly across different manufacturers and OS versions

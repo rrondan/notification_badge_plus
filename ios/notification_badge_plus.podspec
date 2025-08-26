@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'notification_badge_plus'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'A Flutter plugin for displaying notification badges on app icons.'
   s.description      = <<-DESC
-A Flutter plugin for displaying notification badges on app icons with comprehensive Android OEM support and iOS compatibility.
+A Flutter plugin for displaying notification badges on app icons with comprehensive Android manufacturer support and iOS compatibility.
                        DESC
   s.homepage         = 'https://github.com/durgeshparekh/notification_badge'
   s.license          = { :file => '../LICENSE' }

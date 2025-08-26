@@ -22,39 +22,62 @@ class BadgeHelper(private val context: Context) {
     )
 
     fun setBadgeCount(count: Int): Boolean {
+        Log.d("NotificationBadgePlus", "setBadgeCount called with count: $count")
+        
         try {
             // Store the count in SharedPreferences for persistence
             prefs.edit().putInt("badge_count", count).apply()
+            Log.d("NotificationBadgePlus", "Badge count stored in SharedPreferences: $count")
             
             var anySuccess = false
-            for (provider in badgeProviders) {
-                if (provider.isSupported()) {
-                    try {
-                        if (provider.setBadgeCount(count)) {
-                            anySuccess = true
-                            Log.d("NotificationBadge", "Successfully set badge using ${provider.javaClass.simpleName}")
-                        }
-                    } catch (e: Exception) {
-                        Log.w("NotificationBadge", "Failed to set badge using ${provider.javaClass.simpleName}: ${e.message}")
+            val supportedProviders = badgeProviders.filter { it.isSupported() }
+            Log.d("NotificationBadgePlus", "Found ${supportedProviders.size} supported badge providers")
+            
+            for (provider in supportedProviders) {
+                val providerName = provider.javaClass.simpleName
+                Log.d("NotificationBadgePlus", "Attempting to set badge using: $providerName")
+                
+                try {
+                    if (provider.setBadgeCount(count)) {
+                        anySuccess = true
+                        Log.d("NotificationBadgePlus", "Successfully set badge using $providerName")
+                    } else {
+                        Log.w("NotificationBadgePlus", "Failed to set badge using $providerName (returned false)")
                     }
+                } catch (e: Exception) {
+                    Log.w("NotificationBadgePlus", "Failed to set badge using $providerName: ${e.message}")
                 }
             }
+            
+            Log.d("NotificationBadgePlus", "setBadgeCount completed. Success: $anySuccess")
             return anySuccess
         } catch (e: Exception) {
-            Log.e("NotificationBadge", "Error setting badge count", e)
+            Log.e("NotificationBadgePlus", "Error setting badge count: ${e.message}", e)
             return false
         }
     }
 
     fun getBadgeCount(): Int {
-        return prefs.getInt("badge_count", 0)
+        val count = prefs.getInt("badge_count", 0)
+        Log.d("NotificationBadgePlus", "getBadgeCount returning: $count")
+        return count
     }
 
     fun isSupported(): Boolean {
-        return badgeProviders.any { it.isSupported() }
+        val supported = badgeProviders.any { it.isSupported() }
+        Log.d("NotificationBadgePlus", "isSupported returning: $supported")
+        if (supported) {
+            val supportedProviders = getSupportedProviders()
+            Log.d("NotificationBadgePlus", "Supported providers: ${supportedProviders.joinToString()}")
+        } else {
+            Log.w("NotificationBadgePlus", "No badge providers are supported on this device")
+        }
+        return supported
     }
 
     fun getSupportedProviders(): List<String> {
-        return badgeProviders.filter { it.isSupported() }.map { it.javaClass.simpleName }
+        val supportedProviders = badgeProviders.filter { it.isSupported() }.map { it.javaClass.simpleName }
+        Log.d("NotificationBadgePlus", "getSupportedProviders returning: ${supportedProviders.joinToString()}")
+        return supportedProviders
     }
 }

@@ -6,21 +6,39 @@ import 'package:flutter/services.dart';
 
 class NotificationBadgePlus {
   static const MethodChannel _channel = MethodChannel('notification_badge');
+  
+  /// Enable or disable debug logging
+  static bool enableLogging = kDebugMode;
+  
+  static void _log(String message) {
+    if (enableLogging) {
+      if (kDebugMode) {
+        print('[NotificationBadgePlus] $message');
+      }
+    }
+  }
 
   /// Sets the badge count on the app icon
   /// Returns true if successful, false otherwise
   static Future<bool> setBadgeCount(int count) async {
+    _log('setBadgeCount called with count: $count');
+    
     if (count < 0) {
+      _log('Error: Badge count cannot be negative: $count');
       throw ArgumentError('Badge count cannot be negative');
     }
     
     try {
+      _log('Invoking native setBadgeCount method...');
       final result = await _channel.invokeMethod(
         'setBadgeCount',
         {'count': count},
       );
-      return result == true;
+      final success = result == true;
+      _log('setBadgeCount result: $success');
+      return success;
     } catch (e) {
+      _log('setBadgeCount failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to set badge count: $e');
       }
@@ -31,10 +49,16 @@ class NotificationBadgePlus {
   /// Gets the current badge count
   /// Returns the current badge count, or 0 if unable to retrieve
   static Future<int> getBadgeCount() async {
+    _log('getBadgeCount called');
+    
     try {
+      _log('Invoking native getBadgeCount method...');
       final result = await _channel.invokeMethod<int>('getBadgeCount');
-      return result ?? 0;
+      final count = result ?? 0;
+      _log('getBadgeCount result: $count');
+      return count;
     } catch (e) {
+      _log('getBadgeCount failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to get badge count: $e');
       }
@@ -45,16 +69,23 @@ class NotificationBadgePlus {
   /// Clears the badge count (sets it to 0)
   /// Returns true if successful, false otherwise
   static Future<bool> clearBadge() async {
+    _log('clearBadge called');
     return setBadgeCount(0);
   }
 
   /// Checks if the device supports badge notifications
   /// Returns true if supported, false otherwise
   static Future<bool> isSupported() async {
+    _log('isSupported called');
+    
     try {
+      _log('Invoking native isSupported method...');
       final result = await _channel.invokeMethod('isSupported');
-      return result == true;
+      final supported = result == true;
+      _log('isSupported result: $supported');
+      return supported;
     } catch (e) {
+      _log('isSupported failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to check support: $e');
       }
@@ -65,11 +96,18 @@ class NotificationBadgePlus {
   /// Increments the badge count by 1
   /// Returns the new badge count, or current count if failed
   static Future<int> incrementBadge() async {
+    _log('incrementBadge called');
+    
     try {
       final currentCount = await getBadgeCount();
-      final success = await setBadgeCount(currentCount + 1);
-      return success ? currentCount + 1 : currentCount;
+      _log('Current badge count before increment: $currentCount');
+      final newCount = currentCount + 1;
+      final success = await setBadgeCount(newCount);
+      final result = success ? newCount : currentCount;
+      _log('incrementBadge result: $result (success: $success)');
+      return result;
     } catch (e) {
+      _log('incrementBadge failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to increment badge: $e');
       }
@@ -80,12 +118,19 @@ class NotificationBadgePlus {
   /// Decrements the badge count by 1 (minimum 0)
   /// Returns the new badge count, or current count if failed
   static Future<int> decrementBadge() async {
+    _log('decrementBadge called');
+    
     try {
       final currentCount = await getBadgeCount();
+      _log('Current badge count before decrement: $currentCount');
       final newCount = (currentCount - 1).clamp(0, double.infinity).toInt();
+      _log('Calculated new badge count: $newCount');
       final success = await setBadgeCount(newCount);
-      return success ? newCount : currentCount;
+      final result = success ? newCount : currentCount;
+      _log('decrementBadge result: $result (success: $success)');
+      return result;
     } catch (e) {
+      _log('decrementBadge failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to decrement badge: $e');
       }
@@ -96,14 +141,23 @@ class NotificationBadgePlus {
   /// Gets device manufacturer information (Android only)
   /// Returns manufacturer name, or empty string if not available
   static Future<String> getDeviceManufacturer() async {
-    if (!Platform.isAndroid) return '';
+    _log('getDeviceManufacturer called');
+    
+    if (!Platform.isAndroid) {
+      _log('Not Android platform, returning empty string');
+      return '';
+    }
     
     try {
+      _log('Invoking native getDeviceManufacturer method...');
       final result = await _channel.invokeMethod<String>(
         'getDeviceManufacturer',
       );
-      return result ?? '';
+      final manufacturer = result ?? '';
+      _log('getDeviceManufacturer result: $manufacturer');
+      return manufacturer;
     } catch (e) {
+      _log('getDeviceManufacturer failed with error: $e');
       if (kDebugMode) {
         print('NotificationBadge: Failed to get device manufacturer: $e');
       }

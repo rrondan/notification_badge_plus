@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
 **What happens:**
 - iOS: Badge updates automatically, visible immediately
-- Android: Depends on OEM implementation
+- Android: Depends on manufacturer implementation
 
 **Code:**
 ```dart
@@ -149,7 +149,7 @@ if (manufacturer.contains('xiaomi')) {
 }
 ```
 
-### Android - Other OEMs
+### Android - Other Manufacturers
 ```dart
 // Check support first
 final isSupported = await NotificationBadgePlus.isSupported();
@@ -285,7 +285,7 @@ if (Platform.isIOS) {
 - ✅ Always implement WidgetsBindingObserver for lifecycle management
 - ✅ Sync badge count when app resumes from background
 - ✅ Handle push notifications properly for both foreground and background
-- ✅ Test on multiple devices and manufacturers (especially Android OEMs)
+- ✅ Test on multiple devices and manufacturers (especially Android devices)
 - ✅ Provide fallback UI indicators for unsupported devices
 - ✅ Keep badge count in sync with actual data state
 - ✅ Clear badges appropriately when user sees content

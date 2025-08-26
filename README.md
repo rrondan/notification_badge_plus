@@ -1,10 +1,10 @@
 # notification_badge_plus
 
-A comprehensive Flutter plugin for displaying notification badges on app icons with extensive Android OEM support and full iOS compatibility.
+A comprehensive Flutter plugin for displaying notification badges on app icons with extensive Android support and full iOS compatibility.
 
 ## Features
 
-### 🚀 Comprehensive Android OEM Support
+### 🚀 Comprehensive Android Support
 - **Samsung**: Native BadgeProvider integration for all Samsung devices
 - **Xiaomi/Redmi/POCO**: Notification-based badge implementation optimized for MIUI
 - **Huawei/Honor**: EMUI-compatible badge system with broadcast support
@@ -148,7 +148,7 @@ For detailed information about handling badges in background and foreground scen
 - ✅ **Automatic State Management**: Plugin handles app lifecycle automatically
 - ✅ **Badge Persistence**: Counts persist across app states and device restarts
 - ✅ **Background Updates**: iOS supports background badge updates natively
-- ✅ **Android OEM Handling**: Different strategies for various manufacturers
+- ✅ **Android Manufacturer Support**: Different strategies for various manufacturers
 - ✅ **Push Notification Integration**: Seamless integration with push notifications
 - ✅ **Cross-Platform Sync**: Consistent behavior across iOS and Android
 
@@ -194,7 +194,7 @@ void main() async {
 - **Swift Version**: 5.0
 - **Automatic**: No additional setup required
 
-## Android OEM Implementation Details
+## Android Implementation Details
 
 ### Samsung Devices
 Uses Samsung's native BadgeProvider content resolver system. Supports both old and new Samsung devices with automatic fallback methods.
@@ -208,7 +208,7 @@ Utilizes Huawei's badge provider and broadcast system. Compatible with various E
 ### OPPO/OnePlus/Realme
 Supports ColorOS and OxygenOS specific badge implementations with multiple fallback methods.
 
-### Other OEMs
+### Other Manufacturers
 Comprehensive support for Sony, HTC, LG, and Vivo devices using their respective launcher protocols.
 
 ## Troubleshooting
@@ -247,7 +247,7 @@ await Permission.notification.request();
 
 ### Android Implementation
 - Uses multiple badge provider implementations
-- Automatic OEM detection and provider selection
+- Automatic manufacturer detection and provider selection
 - SharedPreferences for badge count persistence
 - Comprehensive error handling and logging
 
