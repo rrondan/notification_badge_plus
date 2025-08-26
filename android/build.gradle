@@ -1,4 +1,4 @@
-group 'com.dp.notification_badge'
+group 'com.dp.notification_badge_plus'
 version '1.0'
 
 buildscript {

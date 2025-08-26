@@ -1,4 +1,4 @@
-package com.dp.notification_badge
+package com.dp.notification_badge_plus
 
 import android.content.Context
 import android.os.Build

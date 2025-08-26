@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-class NotificationBadge {
+class NotificationBadgePlus {
   static const MethodChannel _channel = MethodChannel('notification_badge');
 
   /// Sets the badge count on the app icon

@@ -1,6 +1,6 @@
 # Background and Foreground Notification Badge Handling
 
-This guide provides comprehensive information on how the notification_badge plugin handles badge counts in both foreground and background app states across iOS and Android platforms.
+This guide provides comprehensive information on how the notification_badge_plus plugin handles badge counts in both foreground and background app states across iOS and Android platforms.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -12,7 +12,7 @@ This guide provides comprehensive information on how the notification_badge plug
 
 ## Overview
 
-The notification_badge plugin automatically manages badge counts across different app states:
+The notification_badge_plus plugin automatically manages badge counts across different app states:
 
 - **Foreground**: When the app is active and visible to the user
 - **Background**: When the app is not visible but still running in memory
@@ -87,7 +87,7 @@ iOS allows badge updates while the app is in the background:
 
 ```dart
 // This works even when app is in background
-await NotificationBadge.setBadgeCount(5);
+await NotificationBadgePlus.setBadgeCount(5);
 ```
 
 **Requirements for Background Updates:**
@@ -165,7 +165,7 @@ fun getBadgeCount(): Int {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 class BadgeManager extends StatefulWidget {
   @override
@@ -218,7 +218,7 @@ class _BadgeManagerState extends State<BadgeManager>
 
   Future<void> _initializeBadge() async {
     try {
-      final count = await NotificationBadge.getBadgeCount();
+      final count = await NotificationBadgePlus.getBadgeCount();
       setState(() {
         _badgeCount = count;
       });
@@ -229,7 +229,7 @@ class _BadgeManagerState extends State<BadgeManager>
 
   Future<void> _syncBadgeFromSystem() async {
     try {
-      final systemBadgeCount = await NotificationBadge.getBadgeCount();
+      final systemBadgeCount = await NotificationBadgePlus.getBadgeCount();
       if (systemBadgeCount != _badgeCount) {
         setState(() {
           _badgeCount = systemBadgeCount;
@@ -244,7 +244,7 @@ class _BadgeManagerState extends State<BadgeManager>
   Future<void> _saveBadgeState() async {
     try {
       // Ensure badge is persisted
-      await NotificationBadge.setBadgeCount(_badgeCount);
+      await NotificationBadgePlus.setBadgeCount(_badgeCount);
       print('Badge state saved: $_badgeCount');
     } catch (e) {
       print('Error saving badge state: $e');
@@ -272,7 +272,7 @@ class _BadgeManagerState extends State<BadgeManager>
 
   Future<void> _updateBadge(int newCount) async {
     try {
-      final success = await NotificationBadge.setBadgeCount(newCount);
+      final success = await NotificationBadgePlus.setBadgeCount(newCount);
       if (success) {
         setState(() {
           _badgeCount = newCount;
@@ -290,7 +290,7 @@ class _BadgeManagerState extends State<BadgeManager>
 ```dart
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 class AdvancedBadgeManager {
   static Timer? _backgroundTimer;
@@ -310,10 +310,10 @@ class AdvancedBadgeManager {
     required int increment = 1,
   }) async {
     try {
-      final currentCount = await NotificationBadge.getBadgeCount();
+      final currentCount = await NotificationBadgePlus.getBadgeCount();
       final newCount = currentCount + increment;
       
-      final success = await NotificationBadge.setBadgeCount(newCount);
+      final success = await NotificationBadgePlus.setBadgeCount(newCount);
       if (success) {
         print('Background badge updated: $newCount');
       }
@@ -326,12 +326,12 @@ class AdvancedBadgeManager {
   static Future<void> syncOnForeground() async {
     try {
       // Get current system badge count
-      final systemCount = await NotificationBadge.getBadgeCount();
+      final systemCount = await NotificationBadgePlus.getBadgeCount();
       
       // Apply any pending updates
       if (_pendingBadgeCount > 0) {
         final newCount = systemCount + _pendingBadgeCount;
-        await NotificationBadge.setBadgeCount(newCount);
+        await NotificationBadgePlus.setBadgeCount(newCount);
         _pendingBadgeCount = 0;
         print('Applied pending badge updates: $newCount');
       }
@@ -348,7 +348,7 @@ class AdvancedBadgeManager {
 
   static Future<void> _restoreBadgeCount() async {
     try {
-      final count = await NotificationBadge.getBadgeCount();
+      final count = await NotificationBadgePlus.getBadgeCount();
       print('Restored badge count: $count');
     } catch (e) {
       print('Error restoring badge count: $e');
@@ -360,9 +360,9 @@ class AdvancedBadgeManager {
     // that might need badge refresh
     _backgroundTimer = Timer.periodic(Duration(minutes: 5), (timer) async {
       try {
-        final count = await NotificationBadge.getBadgeCount();
+        final count = await NotificationBadgePlus.getBadgeCount();
         // Re-apply badge count to ensure visibility
-        await NotificationBadge.setBadgeCount(count);
+        await NotificationBadgePlus.setBadgeCount(count);
       } catch (e) {
         print('Background sync error: $e');
       }
@@ -380,7 +380,7 @@ class AdvancedBadgeManager {
 
 ```dart
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 class PushNotificationBadgeHandler {
   static Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -397,8 +397,8 @@ class PushNotificationBadgeHandler {
     // Handle foreground push notifications
     final badgeIncrement = _extractBadgeCount(message);
     if (badgeIncrement > 0) {
-      final currentCount = await NotificationBadge.getBadgeCount();
-      await NotificationBadge.setBadgeCount(currentCount + badgeIncrement);
+      final currentCount = await NotificationBadgePlus.getBadgeCount();
+      await NotificationBadgePlus.setBadgeCount(currentCount + badgeIncrement);
     }
   }
 
@@ -462,7 +462,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 ```dart
 Future<void> updateBadgeWithFallback(int count) async {
   try {
-    final success = await NotificationBadge.setBadgeCount(count);
+    final success = await NotificationBadgePlus.setBadgeCount(count);
     if (!success) {
       // Fallback for unsupported devices
       print('Badge not supported on this device');
@@ -483,17 +483,17 @@ import 'dart:io';
 Future<void> platformSpecificBadgeHandling(int count) async {
   if (Platform.isIOS) {
     // iOS: Badge updates work reliably in background
-    await NotificationBadge.setBadgeCount(count);
+    await NotificationBadgePlus.setBadgeCount(count);
   } else if (Platform.isAndroid) {
     // Android: Check manufacturer and adjust strategy
-    final manufacturer = await NotificationBadge.getDeviceManufacturer();
+    final manufacturer = await NotificationBadgePlus.getDeviceManufacturer();
     
     if (manufacturer.toLowerCase().contains('xiaomi')) {
       // Xiaomi: Ensure notification channel is created
       await _ensureNotificationChannel();
     }
     
-    await NotificationBadge.setBadgeCount(count);
+    await NotificationBadgePlus.setBadgeCount(count);
   }
 }
 ```
@@ -503,14 +503,14 @@ Future<void> platformSpecificBadgeHandling(int count) async {
 Future<void> syncBadgeOnAppResume() async {
   try {
     // Get badge count from system
-    final systemBadgeCount = await NotificationBadge.getBadgeCount();
+    final systemBadgeCount = await NotificationBadgePlus.getBadgeCount();
     
     // Get your app's internal count
     final appBadgeCount = await _getAppInternalBadgeCount();
     
     if (systemBadgeCount != appBadgeCount) {
       // Sync if there's a mismatch
-      await NotificationBadge.setBadgeCount(appBadgeCount);
+      await NotificationBadgePlus.setBadgeCount(appBadgeCount);
       print('Badge synced: $appBadgeCount');
     }
   } catch (e) {
@@ -551,7 +551,7 @@ void didChangeAppLifecycleState(AppLifecycleState state) {
 }
 
 Future<void> _syncBadgeOnResume() async {
-  final currentCount = await NotificationBadge.getBadgeCount();
+  final currentCount = await NotificationBadgePlus.getBadgeCount();
   // Update your app's internal state
   _updateInternalBadgeCount(currentCount);
 }
@@ -584,12 +584,12 @@ Future<void> _requestNotificationPermissions() async {
 **Solution**:
 ```dart
 // Check if badge is supported and provide fallback
-final isSupported = await NotificationBadge.isSupported();
+final isSupported = await NotificationBadgePlus.isSupported();
 if (!isSupported) {
   // Show in-app indicator instead
   _showInAppBadgeIndicator(count);
 } else {
-  await NotificationBadge.setBadgeCount(count);
+  await NotificationBadgePlus.setBadgeCount(count);
 }
 ```
 
@@ -603,7 +603,7 @@ Timer? _badgeUpdateTimer;
 void debouncedBadgeUpdate(int count) {
   _badgeUpdateTimer?.cancel();
   _badgeUpdateTimer = Timer(Duration(milliseconds: 500), () {
-    NotificationBadge.setBadgeCount(count);
+    NotificationBadgePlus.setBadgeCount(count);
   });
 }
 ```
@@ -617,7 +617,7 @@ class BadgeCache {
   static Future<int> getCachedBadgeCount() async {
     if (_cachedBadgeCount == null || 
         DateTime.now().difference(_lastUpdate!) > Duration(minutes: 1)) {
-      _cachedBadgeCount = await NotificationBadge.getBadgeCount();
+      _cachedBadgeCount = await NotificationBadgePlus.getBadgeCount();
       _lastUpdate = DateTime.now();
     }
     return _cachedBadgeCount!;
@@ -627,7 +627,7 @@ class BadgeCache {
 
 ## Conclusion
 
-The notification_badge plugin provides robust background and foreground badge handling across iOS and Android platforms. By following the patterns and best practices outlined in this guide, you can ensure reliable badge functionality regardless of app state or platform-specific limitations.
+The notification_badge_plus plugin provides robust background and foreground badge handling across iOS and Android platforms. By following the patterns and best practices outlined in this guide, you can ensure reliable badge functionality regardless of app state or platform-specific limitations.
 
 Key takeaways:
 - iOS provides native badge persistence and background updates

@@ -1,4 +1,4 @@
-# notification_badge
+# notification_badge_plus
 
 A comprehensive Flutter plugin for displaying notification badges on app icons with extensive Android OEM support and full iOS compatibility.
 
@@ -36,7 +36,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  notification_badge: ^1.0.0
+  notification_badge_plus: ^1.0.0
 ```
 
 ## Usage
@@ -44,33 +44,33 @@ dependencies:
 ### Basic Usage
 
 ```dart
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 // Set badge count
-await NotificationBadge.setBadgeCount(5);
+await NotificationBadgePlus.setBadgeCount(5);
 
 // Get current badge count
-int count = await NotificationBadge.getBadgeCount();
+int count = await NotificationBadgePlus.getBadgeCount();
 
 // Clear badge
-await NotificationBadge.clearBadge();
+await NotificationBadgePlus.clearBadge();
 
 // Increment/Decrement
-int newCount = await NotificationBadge.incrementBadge();
-int decrementedCount = await NotificationBadge.decrementBadge();
+int newCount = await NotificationBadgePlus.incrementBadge();
+int decrementedCount = await NotificationBadgePlus.decrementBadge();
 
 // Check if badges are supported on this device
-bool isSupported = await NotificationBadge.isSupported();
+bool isSupported = await NotificationBadgePlus.isSupported();
 
 // Get device manufacturer (Android only)
-String manufacturer = await NotificationBadge.getDeviceManufacturer();
+String manufacturer = await NotificationBadgePlus.getDeviceManufacturer();
 ```
 
 ### Advanced Usage with Error Handling
 
 ```dart
 try {
-  bool success = await NotificationBadge.setBadgeCount(10);
+  bool success = await NotificationBadgePlus.setBadgeCount(10);
   if (success) {
     print('Badge set successfully!');
   } else {
@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Future<void> _syncBadgeOnResume() async {
     try {
-      final currentCount = await NotificationBadge.getBadgeCount();
+      final currentCount = await NotificationBadgePlus.getBadgeCount();
       // Update your UI with the current count
       setState(() {
         // Update your badge count state
@@ -156,19 +156,19 @@ For detailed information about handling badges in background and foreground scen
 
 ```dart
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 // Handle background push notifications
 static Future<void> handleBackgroundMessage(RemoteMessage message) async {
   final badgeCount = int.tryParse(message.data['badge'] ?? '1') ?? 1;
-  final currentCount = await NotificationBadge.getBadgeCount();
-  await NotificationBadge.setBadgeCount(currentCount + badgeCount);
+  final currentCount = await NotificationBadgePlus.getBadgeCount();
+  await NotificationBadgePlus.setBadgeCount(currentCount + badgeCount);
 }
 
 // Handle foreground push notifications
 static Future<void> handleForegroundMessage(RemoteMessage message) async {
   final badgeCount = int.tryParse(message.data['badge'] ?? '1') ?? 1;
-  await NotificationBadge.incrementBadge();
+  await NotificationBadgePlus.incrementBadge();
 }
 
 // In main.dart

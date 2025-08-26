@@ -1,39 +1,39 @@
-package com.dp.notification_badge
+package com.dp.notification_badge_plus
 
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 
-class OnePlusBadgeProvider(private val context: Context) : BadgeProvider {
+class VivoBadgeProvider(private val context: Context) : BadgeProvider {
     
     override fun isSupported(): Boolean {
         val manufacturer = Build.MANUFACTURER.lowercase()
-        return manufacturer.contains("oneplus")
+        return manufacturer.contains("vivo") || manufacturer.contains("iqoo")
     }
 
     override fun setBadgeCount(count: Int): Boolean {
         return try {
-            // OnePlus specific implementation
-            val intent = Intent("com.oneplus.launcher.action.UPDATE_BADGE").apply {
+            // Vivo uses a similar approach to OPPO but with different intent action
+            val intent = Intent("com.vivo.launcher.action.UPDATE_COUNT").apply {
                 putExtra("packageName", context.packageName)
-                putExtra("className", getLauncherActivityClass())
                 putExtra("count", count)
+                putExtra("className", getLauncherActivityClass())
             }
             
             context.sendBroadcast(intent)
             true
         } catch (e: Exception) {
-            // Try OxygenOS alternative
-            tryOxygenOSMethod(count)
+            // Try alternative method
+            tryVivoAlternative(count)
         }
     }
 
-    private fun tryOxygenOSMethod(count: Int): Boolean {
+    private fun tryVivoAlternative(count: Int): Boolean {
         return try {
-            val intent = Intent("com.android.launcher.action.UNREAD_CHANGED").apply {
-                putExtra("com.android.launcher.extra.UNREAD_COUNT", count)
-                putExtra("com.android.launcher.extra.COMPONENT_NAME", 
-                    "${context.packageName}/${getLauncherActivityClass()}")
+            val intent = Intent("com.vivo.launcher.UPDATE_COUNT").apply {
+                putExtra("packageName", context.packageName)
+                putExtra("count", count)
+                putExtra("className", getLauncherActivityClass())
             }
             
             context.sendBroadcast(intent)

@@ -1,4 +1,4 @@
-package com.dp.notification_badge
+package com.dp.notification_badge_plus
 
 interface BadgeProvider {
     fun isSupported(): Boolean

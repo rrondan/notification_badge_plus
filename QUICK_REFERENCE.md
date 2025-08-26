@@ -3,16 +3,16 @@
 ## 🚀 Quick Setup
 
 ```dart
-import 'package:notification_badge/notification_badge.dart';
+import 'package:notification_badge_plus/notification_badge_plus.dart';
 
 // Set badge count
-await NotificationBadge.setBadgeCount(5);
+await NotificationBadgePlus.setBadgeCount(5);
 
 // Get current count
-int count = await NotificationBadge.getBadgeCount();
+int count = await NotificationBadgePlus.getBadgeCount();
 
 // Clear badge
-await NotificationBadge.clearBadge();
+await NotificationBadgePlus.clearBadge();
 ```
 
 ## 📱 App Lifecycle Integration
@@ -66,8 +66,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 // Background message handler (Firebase)
 static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final badgeCount = int.tryParse(message.data['badge'] ?? '1') ?? 1;
-  final currentCount = await NotificationBadge.getBadgeCount();
-  await NotificationBadge.setBadgeCount(currentCount + badgeCount);
+  final currentCount = await NotificationBadgePlus.getBadgeCount();
+  await NotificationBadgePlus.setBadgeCount(currentCount + badgeCount);
 }
 ```
 
@@ -84,7 +84,7 @@ Future<void> _syncBadgeOnResume() async {
   final unreadCount = await _getUnreadItemsCount();
   
   // Update badge to match actual count
-  await NotificationBadge.setBadgeCount(unreadCount);
+  await NotificationBadgePlus.setBadgeCount(unreadCount);
 }
 ```
 
@@ -101,7 +101,7 @@ Future<void> markItemAsRead() async {
   await _markItemRead();
   
   // Decrement badge
-  await NotificationBadge.decrementBadge();
+  await NotificationBadgePlus.decrementBadge();
 }
 ```
 
@@ -115,12 +115,12 @@ Future<void> markItemAsRead() async {
 ```dart
 // In main() or initState()
 Future<void> _initializeBadge() async {
-  final savedCount = await NotificationBadge.getBadgeCount();
+  final savedCount = await NotificationBadgePlus.getBadgeCount();
   final actualCount = await _getUnreadItemsCount();
   
   if (savedCount != actualCount) {
     // Sync if there's a mismatch
-    await NotificationBadge.setBadgeCount(actualCount);
+    await NotificationBadgePlus.setBadgeCount(actualCount);
   }
 }
 ```
@@ -130,13 +130,13 @@ Future<void> _initializeBadge() async {
 ### iOS
 ```dart
 // iOS handles badges natively - works in all states
-await NotificationBadge.setBadgeCount(count); // ✅ Always works
+await NotificationBadgePlus.setBadgeCount(count); // ✅ Always works
 ```
 
 ### Android - Samsung
 ```dart
 // Works reliably in background
-await NotificationBadge.setBadgeCount(count); // ✅ Usually works
+await NotificationBadgePlus.setBadgeCount(count); // ✅ Usually works
 ```
 
 ### Android - Xiaomi/MIUI
@@ -144,7 +144,7 @@ await NotificationBadge.setBadgeCount(count); // ✅ Usually works
 // Requires notification to show badge
 if (manufacturer.contains('xiaomi')) {
   // Badge shows only when notification is present
-  await NotificationBadge.setBadgeCount(count);
+  await NotificationBadgePlus.setBadgeCount(count);
   // Badge will be visible through notification system
 }
 ```
@@ -152,9 +152,9 @@ if (manufacturer.contains('xiaomi')) {
 ### Android - Other OEMs
 ```dart
 // Check support first
-final isSupported = await NotificationBadge.isSupported();
+final isSupported = await NotificationBadgePlus.isSupported();
 if (isSupported) {
-  await NotificationBadge.setBadgeCount(count);
+  await NotificationBadgePlus.setBadgeCount(count);
 } else {
   // Show alternative UI indicator
   _showInAppBadgeIndicator(count);
@@ -171,7 +171,7 @@ class NotificationHandler {
     final badgeCount = int.tryParse(message.data['badge'] ?? '1') ?? 1;
     
     // Update badge
-    await NotificationBadge.incrementBadge();
+    await NotificationBadgePlus.incrementBadge();
     
     // Show local notification if app is in foreground
     if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
@@ -186,7 +186,7 @@ class NotificationHandler {
 class AppStateManager {
   static Future<void> onAppOpened() async {
     // Clear all badges when user opens app
-    await NotificationBadge.clearBadge();
+    await NotificationBadgePlus.clearBadge();
     
     // Mark all notifications as seen in your backend
     await _markAllNotificationsAsSeen();
@@ -202,7 +202,7 @@ class MessageManager {
     await _markAsRead(messageId);
     
     // Decrease badge by 1
-    final newCount = await NotificationBadge.decrementBadge();
+    final newCount = await NotificationBadgePlus.decrementBadge();
     print('Badge count now: $newCount');
   }
 }
@@ -217,11 +217,11 @@ class BadgeSync {
       final serverUnreadCount = await _getUnreadCountFromServer();
       
       // Get current badge count
-      final currentBadgeCount = await NotificationBadge.getBadgeCount();
+      final currentBadgeCount = await NotificationBadgePlus.getBadgeCount();
       
       if (serverUnreadCount != currentBadgeCount) {
         // Update badge to match server
-        await NotificationBadge.setBadgeCount(serverUnreadCount);
+        await NotificationBadgePlus.setBadgeCount(serverUnreadCount);
         print('Badge synced: $serverUnreadCount');
       }
     } catch (e) {
@@ -236,8 +236,8 @@ class BadgeSync {
 ### Issue: Badge not showing on Android
 ```dart
 // Check device support
-final supported = await NotificationBadge.isSupported();
-final manufacturer = await NotificationBadge.getDeviceManufacturer();
+final supported = await NotificationBadgePlus.isSupported();
+final manufacturer = await NotificationBadgePlus.getDeviceManufacturer();
 print('Supported: $supported, Manufacturer: $manufacturer');
 ```
 
@@ -249,7 +249,7 @@ void didChangeAppLifecycleState(AppLifecycleState state) {
     // Always sync on resume
     Timer(Duration(milliseconds: 500), () async {
       final actualCount = await _getActualUnreadCount();
-      await NotificationBadge.setBadgeCount(actualCount);
+      await NotificationBadgePlus.setBadgeCount(actualCount);
     });
   }
 }
@@ -258,14 +258,14 @@ void didChangeAppLifecycleState(AppLifecycleState state) {
 ### Issue: Badge persists after clearing notifications
 ```dart
 // Force clear badge
-await NotificationBadge.clearBadge();
+await NotificationBadgePlus.clearBadge();
 
 // Wait a moment and check
 await Future.delayed(Duration(milliseconds: 100));
-final count = await NotificationBadge.getBadgeCount();
+final count = await NotificationBadgePlus.getBadgeCount();
 if (count > 0) {
   // Force clear again
-  await NotificationBadge.setBadgeCount(0);
+  await NotificationBadgePlus.setBadgeCount(0);
 }
 ```
 

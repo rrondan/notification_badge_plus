@@ -1,6 +1,6 @@
 ## 1.0.0
 
-* **Initial release of notification_badge package**
+* **Initial release of notification_badge_plus package**
 
 ### 🚀 Core Features
 * Comprehensive Android OEM support for notification badges including:

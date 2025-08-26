@@ -4,7 +4,7 @@
 
 ### Issues Resolved
 1. **✅ Dependencies Sorting**: Fixed alphabetical ordering of dev_dependencies
-2. **✅ Package Name**: Changed from `com.example.notification_badge` to `com.dp.notification_badge`
+2. **✅ Package Name**: Changed from `com.example.notification_badge_plus` to `com.dp.notification_badge_plus`
 3. **✅ Topics Limit**: Reduced topics to 5 items to meet pub.dev requirements
 4. **✅ Metadata Enhancement**: Added comprehensive package metadata
 
@@ -43,8 +43,8 @@ description: A Flutter plugin for displaying notification badges on app icons wi
 version: 1.0.0
 homepage: https://github.com/durgeshparekh/notification_badge
 repository: https://github.com/durgeshparekh/notification_badge
-issue_tracker: https://github.com/durgeshparekh/notification_badge/issues
-documentation: https://github.com/durgeshparekh/notification_badge#readme
+issue_tracker: https://github.com/durgeshparekh/notification_badge_plus/issues
+documentation: https://github.com/durgeshparekh/notification_badge_plus#readme
 
 topics:
   - notification
@@ -90,7 +90,7 @@ flutter:
    - ios
    - oem
 
-3. **📦 Package Structure**: Changed from `com.example.notification_badge` to `com.dp.notification_badge`
+3. **📦 Package Structure**: Changed from `com.example.notification_badge_plus` to `com.dp.notification_badge_plus`
 
 4. **🔤 Dependency Sorting**: Fixed alphabetical order of dev_dependencies
 
@@ -121,7 +121,7 @@ flutter:
 android/src/main/kotlin/
 ├── com/
 │   └── dp/                           # Changed from 'example'
-│       └── notification_badge/
+│       └── notification_badge_plus/
 │           ├── NotificationBadgePlugin.kt
 │           ├── BadgeHelper.kt
 │           └── [all other provider files...]
