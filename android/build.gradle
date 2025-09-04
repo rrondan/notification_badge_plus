@@ -1,17 +1,27 @@
 group 'com.dp.notification_badge_plus'
 version '1.0'
 
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+buildscript {
+    ext.kotlin_version = '1.9.24'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     namespace "com.dp.notification_badge_plus"
-    compileSdk = 35
+    compileSdkVersion 35
 
     defaultConfig {
-        minSdk = 16
+        minSdkVersion 16
     }
 
     compileOptions {
@@ -29,5 +39,5 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
