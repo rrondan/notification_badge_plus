@@ -1,31 +1,18 @@
 group 'com.dp.notification_badge_plus'
 version '1.0'
 
-buildscript {
-    ext.kotlin_version = '1.9.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
 }
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    namespace "com.dp.notification_badge_plus"
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 16
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -39,12 +26,8 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+}
 
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    }
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
 }
